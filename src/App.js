@@ -5,7 +5,8 @@ import Admin from "./components/Admin";
 import Header from "./components/Header";
 import EditUser from "./components/EditUser";
 import ForumContent from "./components/ForumContent";
-// import SignUp from './components/SignUp'
+import SignupForm from "./components/SignUp";
+import Login from "./components/Login";
 
 function App () {
   
@@ -15,10 +16,6 @@ function App () {
       <Grid item> 
         <Router>
           <Header/>
-          <Switch>
-            <Route exact path="/admin-panel" component={Admin}/>
-            <Route exact path="/edit-user" component={EditUser}/>
-          </Switch>
         </Router>
       </Grid>
       <Grid item container>
@@ -26,7 +23,11 @@ function App () {
         <Router>
           <Switch>
             <Grid item xs={12} sm={8}>
-            <Route exact path="/" component={ForumContent}/>
+              <Route exact path="/admin-panel" component={Admin}/>
+              <Route exact path="/edit-user" component={EditUser}/>
+              <Route exact path="/sign-up" component={SignupForm}/>
+              <Route exact path="/login" component={Login}/>
+              <Route exact path="/" component={ForumContent}/>
             </Grid>
           </Switch>
         </Router>

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-// import Link from "react-router-dom";
-import axios from './../axios.js'
+import Link from "react-router-dom";
+import axios from 'axios'
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -12,6 +12,12 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/DeleteOutline";
 import View from "@material-ui/icons/Visibility"
+
+let axiosConfig = {
+  withCredentials: true
+}
+
+const serverAppUri = 'http://127.0.0.1:8000/api';
 
 const useStyle = makeStyles({
   table:{
@@ -28,12 +34,12 @@ export default function Admin() {
     }, []);
 
     async function loadUsers() {
-        let result = await axios.get("http://127.0.0.1:8000/api/user/view-all-user")
+        let result = await axios.get(`${serverAppUri}/user/view-all-user`)
         setUser(result.data.data.allusers)
     }
     async function deleteUser(id) {
       console.log(id)
-      await axios.delete(`http://127.0.0.1:8000/api/user/delete-user/${id}`)
+      await axios.delete(`${serverAppUri}/user/delete-user/${id}`)
       loadUsers();
     }
   return (
