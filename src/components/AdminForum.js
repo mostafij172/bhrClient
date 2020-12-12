@@ -1,6 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import {Link, useHistory} from "react-router-dom";
-import jwt_decode from "jwt-decode";
 import axios from 'axios'
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -12,11 +10,6 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/DeleteOutline";
-import View from "@material-ui/icons/Visibility"
-
-let axiosConfig = {
-  withCredentials: true
-}
 
 const serverAppUri = 'http://127.0.0.1:8000/api';
 
@@ -26,47 +19,51 @@ const useStyle = makeStyles({
   }
 })
 
-export default function Admin() {
-  let history = useHistory()
+export default function AdminForum() {
   let classes = useStyle();
-  const [users, setUser] = useState([]);
+  const [forums, setForum] = useState([]);
   
     useEffect(function() {
-        loadUsers()
+      loadForum()
     }, []);
 
-    async function loadUsers() {
-        let result = await axios.get(`${serverAppUri}/user/view-all-user`, {
+    async function loadForum() {
+        let result = await axios.get(`${serverAppUri}/forum/get-all-posts`, {
           headers: {'Authorization': 'Bearer ' + localStorage.getItem('authToken')}
         })
-        setUser(result.data.data.allusers)
+        setForum(result.data.data)
     }
     // async function deleteUser(id) {
     //   console.log(id)
     //   await axios.delete(`${serverAppUri}/user/delete-user/${id}`)
     //   loadUsers();
     // }
+    // console.log(forums)
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell align="left">Email</TableCell>
+            <TableCell>User Name</TableCell>
+            <TableCell align="left">Title</TableCell>
             <TableCell align="left">Role</TableCell>
             <TableCell align="left">Cell Pone No</TableCell>
             <TableCell align="right">Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {users.map(item => (
+          {forums.map(item => (
             <TableRow key={item._id}>
-              <TableCell component="th" scope="row">{item.name}</TableCell>
-              <TableCell align="left">{item.email}</TableCell>
-              <TableCell align="left">{item.role}</TableCell>
-              <TableCell align="left">{item.cell_phone_no}</TableCell>
-              <TableCell align="left"><Link to={`profile/${item["_id"]}`}><Button color="primary" variant="outlined"><View/></Button></Link></TableCell>
-              {/* <TableCell align="left"><Button color="secondary" variant="outlined"> <DeleteIcon/> </Button></TableCell> */}
+              <TableCell component="th" scope="row">{item.user.name}</TableCell>
+              <TableCell component="th">{item.title}</TableCell>
+              <TableCell align="left">{item.catagory}</TableCell>
+              <TableCell align="left">{item.postBody}</TableCell>
+              <TableCell align="left"><Button color="secondary" variant="outlined" onClick={async function() {
+                        await axios.delete(`${serverAppUri}/forum/delete-post/${item._id}`,{
+                          headers: {'Authorization': 'Bearer ' + localStorage.getItem('authToken')}
+                        });
+                        loadForum();
+              }}> <DeleteIcon/> </Button></TableCell>
             </TableRow>
           ))}
         </TableBody>  

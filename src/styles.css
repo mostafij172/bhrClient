@@ -181,6 +181,7 @@ label {
 
 input[type="email"],
 input[type="text"],
+input[type="password"],
 input[type="number"] {
   padding: 0.65rem 0.5rem;
   font-size: 1rem;
@@ -196,6 +197,7 @@ input[type="number"] {
 @media (prefers-color-scheme: dark) {
   input[type="email"],
   input[type="text"],
+  input[type="password"],
   input[type="number"] {
     background-color: var(--gray-800);
     border-color: var(--gray-700);
@@ -632,6 +634,7 @@ button[type="reset"]:hover {
 input[type="email"],
 input[type="text"],
 input[type="number"],
+input[type="password"]
 textarea,
 select {
   width: 400px;
